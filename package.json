@@ -1,0 +1,15 @@
+{
+  "name": "minecraftserverapi",
+  "version": "1.0.0",
+  "description": "an API for minecraft server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "API",
+    "Minecraft"
+  ],
+  "author": "Leonid, Ainès",
+  "license": "ISC"
+}
