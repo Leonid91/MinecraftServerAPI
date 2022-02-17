@@ -8,7 +8,7 @@ RUN npm install express
 RUN npm install rcon
 RUN npm install
 
-COPY back/app.js /MinecraftServerAPI/back/app.js
+COPY . /MinecraftServerAPI/
 
 EXPOSE 3000
 CMD [ "node", "/MinecraftServerAPI/back/app.js" ]
