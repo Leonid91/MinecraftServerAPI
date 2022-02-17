@@ -17,7 +17,7 @@ module.exports = () => {
 
     router.post('/', async (req, res) => {
 
-        let conn = new rcon('82.64.160.64', 25575, 'rcon', options);
+        let conn = new rcon('localhost', 25575, 'rcon', options);
         let r = "salut";
 
             conn.on('auth', function() {
