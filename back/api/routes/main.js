@@ -18,6 +18,7 @@ module.exports = () => {
     router.post('/', async (req, res) => {
 
         let conn = new rcon('82.64.160.64', 25575, 'rcon', options);
+        let r = "salut";
 
             conn.on('auth', function() {
             // You must wait until this event is fired before sending any commands,
@@ -28,6 +29,7 @@ module.exports = () => {
             // conn.send("help");
         }).on('response', function(str) {
             console.log("Response: " + str);
+            res.send(str);
         }).on('error', function(err) {
             console.log("Error: " + err);
         }).on('end', function() {
@@ -36,8 +38,8 @@ module.exports = () => {
         });
 
         conn.connect();
-        
-        // res.send(res)
+        // console.log(r);
+        // res.send(feedback);
     });
 
     return router;
