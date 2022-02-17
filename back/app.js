@@ -1,20 +1,29 @@
+const controllers = require("./api");
 const rcon = require('rcon');
-const http = require('http');
 const express = require('express');
 const router = express.Router();
 
-const hostname = '127.0.0.1';
-const port = 3000;
+async function startServer() {
+  const app = express();
+  const port = 3000;
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
-});
+  // await require("./loaders")(app);
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+  app.listen(port, (err) => {
+    if (err) {
+      Logger.error(err);
+      process.exit(1);
+      return;
+    }
+    console.log(`
+        ################################################
+        🛡️  Server listening on port: ${port} 🛡️ 
+        ################################################
+      `);
+  });
+}
+
+startServer();
 
 /** RCON */
 let conn = new rcon('82.64.160.64', 25575, 'test');
