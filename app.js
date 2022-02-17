@@ -1,5 +1,4 @@
-const Rcon = require('../node-rcon');
-
+const rcon = require('rcon');
 const http = require('http');
 
 const hostname = '127.0.0.1';
@@ -16,7 +15,7 @@ server.listen(port, hostname, () => {
 });
 
 /** RCON */
-let conn = new Rcon('localhost', 3000, 'password');
+let conn = new rcon('82.64.160.64', 25575, 'test');
 
 conn.on('auth', function() {
   // You must wait until this event is fired before sending any commands,
