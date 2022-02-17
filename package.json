@@ -11,5 +11,17 @@
     "Minecraft"
   ],
   "author": "Leonid, Ainès",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "rcon": "^1.1.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leonid91/MinecraftServerAPI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Leonid91/MinecraftServerAPI/issues"
+  },
+  "homepage": "https://github.com/Leonid91/MinecraftServerAPI#readme"
 }
