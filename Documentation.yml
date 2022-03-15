@@ -1,0 +1,386 @@
+swagger: "2.0"
+info:
+  description: "This document describes how to use the API to communicate with the Minecraft-server through RCON commands. <br/> With this API you can : <ul><li> Manage the users</li> <li> Execute RCON commands </li> </ul>"
+  version: "0.1.3.1"
+  title: "Minecraft RCON API"
+  contact:
+    email: "aines.bouziane@universite-paris-saclay.fr"
+host: "82.64.160.64:3000"
+basePath: "/api"
+tags:
+
+- name: "whitelist"
+  description: "Edit the whitelist of the server"
+  externalDocs:
+    description: "Properties"
+    url: "https://minecraft.fandom.com/fr/wiki/Server.properties"
+
+- name: "user"
+  description: "User management"
+  externalDocs:
+    description: "Find out more"
+    url: "https://jwt.io/"
+
+- name: "rcon"
+  description: "Common RCON commands"
+  externalDocs:
+    description: "Minecraft commands"
+    url: "https://minecraft.fandom.com/wiki/Commands"
+    
+- name: "inventory"
+  description: "Manage players inventory"
+  externalDocs:
+    description: "See"
+    url: "https://minecraft.fandom.com/wiki/Commands/data"
+  
+schemes:
+- "https"
+- "http"
+paths:
+
+  /whitelist:
+    get:
+      tags:
+      - "whitelist"
+      summary: "Get all the players from the whitelist"
+      description: "Return a list of all items that have a player. <br/> Optional : You can filter by name"
+      operationId: "getPlayerWhitelist"
+      produces:
+      - "Array of string"
+      responses:
+        "200":
+          description: "The list of the players"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+    delete:
+        tags:
+        - "whitelist"
+        summary: "Empty the whitelist"
+        description: ""
+        operationId: "EmptyWhitelist"
+        produces:
+      - "Array of string"
+        responses:
+          "200":
+            description: "List emptied"
+          "400":
+            description: "Error while emptying the list"
+            
+    post:
+      tags:
+      - "whitelist"
+      summary: "Reload the whitelist"
+      description: "Reload the whitelist if it had been modified"
+      operationId: "ReloadWhitelist"
+      responses:
+        "200":
+          description: "Whitelist reloaded"
+        "400":
+          description: "Error while reloading the whitelist"
+    
+  /whitelist/{player}:
+    get:
+      tags:
+      - "whitelist"
+      summary: "Return if a player is whitelisted or not"
+      description: ""
+      operationId: "isPlayerWhitelisted"
+      parameters:
+      - name: "player"
+        in: "path"
+        description: "Username of the player"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Boolean that indicate if the player is whitelisted"
+          schema:
+            type: "boolean"
+        "404":
+          description: "Player not found"
+    
+    post:
+      tags:
+      - "whitelist"
+      summary: "Add a player to the whitelist"
+      description: ""
+      operationId: "AddPlayerToWhitelist"
+      consumes:
+      - "string"
+      produces:
+      - "Array"
+      parameters:
+      - name: "player"
+        in: "path"
+        description: "Username of the player"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "List of objects to add"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/ItemToAdd"
+      responses:
+        "200":
+          description: "The new content of the player inventory"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InventoryItem"
+        "400":
+          description: "Invalid itemlist supplied"
+        "404":
+          description: "Player not found"   
+          
+    delete:
+        tags:
+        - "whitelist"
+        summary: "Remove a player from the whitelist"
+        description: ""
+        operationId: "removePlayerFromWhitelist"
+        produces:
+        - "Boolean"
+        parameters:
+        - name: "player"
+          in: "path"
+          description: "Username of the player"
+          required: true
+          type: "string"
+        responses:
+          "200":
+            description: "Player removed from the whitelist"
+          "400":
+            description: "Error while removing the player"
+          "404":
+            description: "Player not found"
+  /whitelist/enable:
+    post:
+      tags:
+      - "whitelist"
+      summary: "Enable/Disable the whitelist"
+      description: ""
+      operationId: "EnableWhitelist"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Minecraft command"
+        required: true
+        schema:
+            type: "string"
+      responses:
+        "201":
+          description: "Whitelist enabled"
+        "202":
+          description: "Whitelist disabled"
+        "400":
+          description: "Error when enabling/disabling the whitelist"
+    
+  /rcon:
+    post:
+      tags:
+      - "rcon"
+      summary: "Execute an arbitrary RCON command"
+      description: "Execute the command and provide the original output from the Minecraft Server"
+      operationId: "ExecuteRCON"
+      produces:
+      - "string"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Minecraft command"
+        required: true
+        schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Original output from the Minecraft if it succeed"
+          schema:
+            type: "string"
+        "404":
+          description: "Original output from the Minecraft if it failed"
+          schema:
+            type: "string"
+
+  /inventory/{player}:
+    get:
+      tags:
+      - "inventory"
+      summary: "Get all the items from a player inventory"
+      description: "Return a list of all items that have a player. <br/> Optional : You can filter by name"
+      operationId: "getPlayerInventory"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "player"
+        in: "path"
+        description: "Username of the player"
+        required: true
+        type: "string"
+      - name : "filter"
+        in: "query"
+        description: "Text on which you want to filter the results"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "The item that had been added"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InventoryItem"
+        "404":
+          description: "Player not found"
+        
+    post:
+      tags:
+      - "inventory"
+      summary: "Give a list of items to a player"
+      description: "Add a list of items to the player target. <br/> TODO : Faire du contrôle de quantité, gestion de l'espace disponible dans l'inventaire du joueur <br/> Utiliser la commande give \\<target\\> \\<item\\> \\[\\<count\\>\\]"
+      operationId: "AddItemToPlayerInventory"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "player"
+        in: "path"
+        description: "Username of the player"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "List of objects to add"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/ItemToAdd"
+      responses:
+        "200":
+          description: "The new content of the player inventory"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InventoryItem"
+        "400":
+          description: "Invalid itemlist supplied"
+        "404":
+          description: "Player not found"
+    
+    put:
+      tags:
+      - "inventory"
+      summary: "Modify the whole inventory of the player"
+      description: "Modify the whole content of a player inventory by another content"
+      operationId: "ModifyPlayerInventory"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "player"
+        in: "path"
+        description: "Username of the player"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user inventory"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/InventoryItem"
+      responses:
+        "200":
+          description: "The new inventory of the player"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InventoryItem"
+        "400":
+          description: "Invalid itemlist supplied"
+        "404":
+          description: "Player not found"
+          
+    delete:
+        tags:
+        - "inventory"
+        summary: "Empty an inventory"
+        description: ""
+        operationId: "emptyPlayerInventory"
+        produces:
+        - "application/json"
+        parameters:
+        - name: "player"
+          in: "path"
+          description: "Username of the player"
+          required: true
+          type: "string"
+        responses:
+          "404":
+            description: "Player not found"
+            
+  /inventory/{player}/{item}:      
+    delete:
+        tags:
+        - "inventory"
+        summary: "Remove an item from a player inventory"
+        description: ""
+        operationId: "removeItemFromPlayerInventory"
+        produces:
+        - "application/json"
+        parameters:
+        - name: "player"
+          in: "path"
+          description: "Username of the player"
+          required: true
+          type: "string"
+        - name: "item"
+          in: "path"
+          description: "Id of the item"
+          required: true
+          type: "string"
+        - name: "count"
+          in: "query"
+          description: "Number of occurence to remove"
+          required: false
+          type: "string"
+        responses:
+          "404":
+            description: "Player or Item not found"
+          "405":
+            description: "Item not found in the player's inventory"
+  
+definitions:    
+  InventoryItem:
+    type: "object"
+    required:
+    - "slot"
+    - "id"
+    - "count"
+    properties:
+      slot:
+        type: "string"
+      id:
+        type: "string"
+      count:
+        type: "string"
+      tag:
+        type: "string"
+  
+  ItemToAdd:
+    type: "object"
+    required:
+    - "username"
+    - "count"
+    properties:
+      username:
+        type: "string"
+      count:
+        type: "integer"
