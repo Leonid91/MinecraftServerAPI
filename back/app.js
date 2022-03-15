@@ -1,6 +1,7 @@
 const controllers = require("./api");
 const express = require('express');
 const router = express.Router();
+require("dotenv").config();
 
 async function startServer() {
   const app = express();

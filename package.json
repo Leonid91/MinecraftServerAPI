@@ -13,7 +13,10 @@
   "author": "Leonid, Ainès",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.3",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
     "rcon": "^1.1.0"
   },
   "repository": {
