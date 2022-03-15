@@ -1,0 +1,6 @@
+{
+    "users" : [
+        {"name" : "leonid", "role" : "super-admin"},
+        {"name" : "aines", "role" : "visiteur"}
+    ]
+}
