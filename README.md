@@ -1,6 +1,6 @@
 # MinecraftServerAPI
 
-To run the server : node app.js 
+To run the server :
 
 ```bash
 cd back
