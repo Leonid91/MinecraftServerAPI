@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mc_webapi
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/MinecraftServerAPI
+    links:
+      - mc_serv:mcserv
+
+  mcserv:
+    image: itzg/minecraft-server
+    environment: 
+      EULA: true
+      ENABLE_RCON: true
+      RCON_PASSWORD: rcon
+    container_name: mc_serv
+    ports:
+      - "25565:25565"
+
