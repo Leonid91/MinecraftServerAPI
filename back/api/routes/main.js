@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const { Console } = require('console');
+const auth = require('../../middleware/auth');
 require("dotenv").config();
 
 module.exports = () => {
@@ -90,6 +91,40 @@ module.exports = () => {
                     console.log(`Error reading file from disk: ${err}`)
                     return
                 }
+                /** --- get token from cookies --- */
+                const token = req.cookies.token
+
+                // if the cookie is not set, return an unauthorized error
+
+                /** --- To switch between password and JWT auth --- */
+                let isPasswordAuth = false;
+
+                if (!token) {
+                    isPasswordAuth = true;
+                }
+
+                if (!isPasswordAuth) {
+                    var payload
+                    try {
+                        // Parse the JWT string and store the result in `payload`.
+                        // Note that we are passing the key in this method as well. This method will throw an error
+                        // if the token is invalid (if it has expired according to the expiry time we set on sign in),
+                        // or if the signature does not match
+                        payload = jwt.verify(token, jwtKey)
+
+                    } catch (e) {
+                        if (e instanceof jwt.JsonWebTokenError) {
+                            // if the error thrown is because the JWT is unauthorized, return a 401 error
+                            return res.status(401).end()
+                        }
+                        // otherwise, return a bad request error
+                        return res.status(400).end()
+                    }
+                    // Finally, return the welcome message to the user, along with their
+                    // username given in the token
+                    res.send(`Welcome ${payload.username}!`)
+                }
+
                 /** --- Get data from user database --- */
                 const userData = JSON.parse(data)
 
