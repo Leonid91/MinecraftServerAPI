@@ -4,6 +4,7 @@ const router = express.Router();
 const rcon = require('rcon');
 
 module.exports = () => {
+    const app = express();
     /** RCON */
     const options = {
         tcp: true,       // false for UDP, true for TCP (default true)
@@ -17,7 +18,7 @@ module.exports = () => {
     });
 
     // importing user context
-    const User = require("./model/user");
+    const User = require("../../model/user");
 
     // Register
     app.post("/register", (req, res) => {
@@ -26,7 +27,7 @@ module.exports = () => {
 
     // Login
     app.post("/login", (req, res) => {
-        
+
     });
 
     /** Other routes */
