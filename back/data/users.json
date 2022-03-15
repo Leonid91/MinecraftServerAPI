@@ -1,14 +1,10 @@
 [
     {
-        "pseudo": "leonid",
-        "password": "$2a$10$VCnf/shvliWT4slMUamsmeXI0AF6.JwEqZchcNIlMP1jehDsERkya"
+        "username": "newLeonid",
+        "password": "$2a$10$iMuBGmcA/wq7T4yt2YHSf.EG7Fb9/o/MtF.5/Tw4PsLAFo9giw7ni"
     },
     {
-        "pseudo": "aines",
-        "password": "$2a$10$gZuOs2ZRuO14DONPpbUAw.ySY/WXLn6vTOmBmJbu7OlsKBDtktygW"
-    },
-    {
-        "pseudo": "leonid9",
-        "password": "$2a$10$S2FohpP2cvdstIOtLAjyi.IJicgUy79Dkoy4FBZY5BJovrBCFMElu"
+        "username": "Leonid",
+        "password": "$2a$10$y5P.GsgHqZ7BskCZ5DwSnencKU6WHWJWbxtAduYloGXCuCMMAZmbu"
     }
 ]

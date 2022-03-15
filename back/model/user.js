@@ -1,10 +1,9 @@
 'use strict';
 module.exports = () => {
     let User = class {
-        constructor(pseudo, password, token) {
-            this.pseudo = pseudo;
+        constructor(username, password) {
+            this.username = username;
             this.password = password;
-            this.token = token;
         }
     };
     return User;
