@@ -22,3 +22,11 @@ services:
     ports:
       - "25565:25565"
 
+  prom:
+    image: prom/prometheus
+    container_name: mc_prom
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    ports:
+      - "9090:9090"
+
