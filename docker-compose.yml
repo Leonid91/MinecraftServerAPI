@@ -32,6 +32,8 @@ services:
       - ./prometheus/:/etc/prometheus/
     ports:
       - "9090:9090"
+    volumes:
+    - ./world:/world:ro
 
   minecraft-exporter:
     build: https://github.com/Joshi425/minecraft-exporter.git
