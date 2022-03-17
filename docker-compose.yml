@@ -18,6 +18,7 @@ services:
       EULA: true
       ENABLE_RCON: true
       RCON_PASSWORD: rcon
+      ONLINE_MODE: false
     container_name: mc_serv
     ports:
       - "25565:25565"

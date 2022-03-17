@@ -7,20 +7,15 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const { Console } = require('console');
 const auth = require('../../middleware/auth');
+const res = require('express/lib/response');
 require("dotenv").config();
 
 module.exports = () => {
 
     const jwtKey = "my_secret_key"
+    
+    // #region Auth routes
 
-    // const app = express();
-    /** RCON */
-    const options = {
-        tcp: true,       // false for UDP, true for TCP (default true)
-        challenge: true  // true to use the challenge protocol (default true)
-    };
-
-    /** --- Auth routes --- */
     // After Register / Login, use auth on other routes
 
     // importing user context
@@ -132,37 +127,44 @@ module.exports = () => {
             console.log("Error : " + err);
         }
     });
+    // #endregion
 
-    /** Other routes */
+    // #region whitelist
+    
+
+    // #endregion
+
+    // #region Basic routes + RCON command
+
     router.get('/', async (req, res) => {
 
         res.send("test")
     });
 
+    // RCON command
     router.post('/', async (req, res) => {
 
         let conn = new rcon('mc_serv', 25575, 'rcon', options);
-        let r = "salut";
 
         conn.on('auth', function () {
             // You must wait until this event is fired before sending any commands,
             // otherwise those commands will fail.
-            console.log("Authenticated");
-            console.log("Affichage de la commande reçue : ", JSON.stringify(req.body.command));
-            conn.send(req.body.command);
-            // conn.send("help");
+            console.log("Authenticated")
+            console.log("Display of the received command: ", JSON.stringify(req.body.command))
+            conn.send(req.body.command)
         }).on('response', function (str) {
-            console.log("Response: " + str);
-            res.send(str);
+            console.log("Response: " + str)
+            res.send(str)
         }).on('error', function (err) {
-            console.log("Error: " + err);
+            console.log("Error: " + err)
         }).on('end', function () {
-            console.log("Connection closed");
-            process.exit();
+            console.log("Connection closed")
+            process.exit()
         });
 
         conn.connect();
     });
+    // #endregion
 
     return router;
 };
