@@ -18,7 +18,10 @@ services:
       EULA: true
       ENABLE_RCON: true
       RCON_PASSWORD: rcon
+      ONLINE_MODE: false
     container_name: mc_serv
+    volumes:
+      - ./world:/world
     ports:
       - "25565:25565"
 
@@ -29,4 +32,16 @@ services:
       - ./prometheus/:/etc/prometheus/
     ports:
       - "9090:9090"
+
+  minecraft-exporter:
+    build: https://github.com/Joshi425/minecraft-exporter.git
+    container_name: mc_exporter
+    environment:
+      RCON_HOST: mcserv
+      RCON_PORT: "25575"
+      RCON_PASSWORD: rcon
+    ports:
+    - "9700:8000"
+    volumes:
+    - ./world:/world:ro
 
