@@ -21,6 +21,7 @@ module.exports = () => {
     };
 
     /** --- Auth routes --- */
+    // After Register / Login, use auth on other routes
 
     // importing user context
     const User = require("../../model/user");
@@ -91,39 +92,9 @@ module.exports = () => {
                     console.log(`Error reading file from disk: ${err}`)
                     return
                 }
-                /** --- get token from cookies --- */
-                const token = req.cookies.token
-
-                // if the cookie is not set, return an unauthorized error
 
                 /** --- To switch between password and JWT auth --- */
                 let isPasswordAuth = false;
-
-                if (!token) {
-                    isPasswordAuth = true;
-                }
-
-                if (!isPasswordAuth) {
-                    var payload
-                    try {
-                        // Parse the JWT string and store the result in `payload`.
-                        // Note that we are passing the key in this method as well. This method will throw an error
-                        // if the token is invalid (if it has expired according to the expiry time we set on sign in),
-                        // or if the signature does not match
-                        payload = jwt.verify(token, jwtKey)
-
-                    } catch (e) {
-                        if (e instanceof jwt.JsonWebTokenError) {
-                            // if the error thrown is because the JWT is unauthorized, return a 401 error
-                            return res.status(401).end()
-                        }
-                        // otherwise, return a bad request error
-                        return res.status(400).end()
-                    }
-                    // Finally, return the welcome message to the user, along with their
-                    // username given in the token
-                    res.send(`Welcome ${payload.username}!`)
-                }
 
                 /** --- Get data from user database --- */
                 const userData = JSON.parse(data)
@@ -143,8 +114,16 @@ module.exports = () => {
 
                 if (!isUserVerified) {
                     res.status(409).send("Wrong username or password.")
+                    res.end()
                     return
                 }
+
+                // Create a new token with the username in the payload
+                const token = jwt.sign({ username }, jwtKey, {
+                    algorithm: "HS256"
+                })
+
+                res.cookie("token", token)
 
                 res.send("Logged In.")
                 res.end()
@@ -183,30 +162,7 @@ module.exports = () => {
         });
 
         conn.connect();
-        // console.log(r);
-        // res.send(feedback);
     });
-
-    function generateAccessToken(username) {
-        return jwt.sign(username, process.env.TOKEN_SECRET);
-    }
-
-    function authenticateToken(req, res, next) {
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
-
-        if (token == null) return res.sendStatus(401)
-
-        jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-            console.log(err)
-
-            if (err) return res.sendStatus(403)
-
-            req.user = user
-
-            next()
-        })
-    }
 
     return router;
 };
