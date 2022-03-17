@@ -1,9 +1,9 @@
 'use strict';
 module.exports = () => {
     let User = class {
-        constructor(name, role) {
-            this.name = name;
-            this.role = role;
+        constructor(username, password) {
+            this.username = username;
+            this.password = password;
         }
     };
     return User;
