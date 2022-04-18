@@ -2,7 +2,6 @@ const rcon = require('rcon');
 
 function sendCommandRcon(command, res) {
     const conn = connectRcon()
-    console.table(conn)
 
     conn.on('auth', function () {
         // You must wait until this event is fired before sending any commands,
@@ -20,6 +19,8 @@ function sendCommandRcon(command, res) {
         res.end()
         process.exit()
     });
+
+    conn.connect()
 }
 
 function connectRcon() {
@@ -33,4 +34,9 @@ function connectRcon() {
 
     return conn
 }
-module.exports = { sendCommandRcon }
+
+function getArrayFromString(str) {
+    return str.replaceAll(" ", "").substring(str.indexOf(':')+1).split(",")
+}
+
+module.exports = { sendCommandRcon, connectRcon, getArrayFromString }
