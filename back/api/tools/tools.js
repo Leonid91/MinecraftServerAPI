@@ -2,6 +2,7 @@ const rcon = require('rcon');
 
 function sendCommandRcon(command, res) {
     const conn = connectRcon()
+    console.table(conn)
 
     conn.on('auth', function () {
         // You must wait until this event is fired before sending any commands,
@@ -27,7 +28,8 @@ function connectRcon() {
         challenge: true  // true to use the challenge protocol (default true)
     };
 
-    const conn = new rcon('mc_serv', 25575, 'rcon', options);
+    console.log("Starting rcon connection...")
+    const conn = new rcon('localhost', 25575, 'rcon', options); //mc_serv
 
     return conn
 }

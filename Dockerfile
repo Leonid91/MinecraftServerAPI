@@ -7,6 +7,7 @@ COPY package*.json /MinecraftServerAPI/
 RUN npm install express
 RUN npm install rcon
 RUN npm install
+RUN npm install dotenv@latest
 
 COPY . /MinecraftServerAPI/
 

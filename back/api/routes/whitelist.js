@@ -4,7 +4,8 @@ const tools = require("./../tools/tools.js")
 
 module.exports = () => {
     router.get('/', async (req, res) => {
-        const command = "/"
+        const command = "/list"
+        // console.log("REACHED: " + command)
         tools.sendCommandRcon(command, res)
     });
 
