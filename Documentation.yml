@@ -61,7 +61,7 @@ paths:
         description: ""
         operationId: "EmptyWhitelist"
         produces:
-      - "Array of string"
+        - "Array of string"
         responses:
           "200":
             description: "List emptied"
