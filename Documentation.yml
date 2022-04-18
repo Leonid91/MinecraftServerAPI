@@ -43,7 +43,7 @@ paths:
       tags:
       - "whitelist"
       summary: "Get all the players from the whitelist"
-      description: "Return a list of all items that have a player. <br/> Optional : You can filter by name"
+      description: "Return a list of all players."
       operationId: "getPlayerWhitelist"
       produces:
       - "Array of string"
