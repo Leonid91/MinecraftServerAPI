@@ -130,50 +130,6 @@ module.exports = () => {
     });
     // #endregion
 
-    // #region whitelist
-
-
-    // #endregion
-
-    // #region Basic routes + RCON command
-
-    router.get('/', async (req, res) => {
-
-        res.send("test")
-    });
-
-    // RCON command
-    router.post('/', async (req, res) => {
-
-        /** RCON */
-        const options = {
-            tcp: true,       // false for UDP, true for TCP (default true)
-            challenge: true  // true to use the challenge protocol (default true)
-        };
-
-        let conn = new rcon('localhost', 25575, 'rcon', options);
-
-        conn.on('auth', function () {
-            // You must wait until this event is fired before sending any commands,
-            // otherwise those commands will fail.
-            console.log("Authenticated");
-            console.log("Affichage de la commande reçue : ", JSON.stringify(req.body.command));
-            conn.send(req.body.command);
-            // conn.send("help");
-        }).on('response', function (str) {
-            console.log("Response: " + str);
-            res.send(str);
-        }).on('error', function (err) {
-            console.log("Error: " + err);
-        }).on('end', function () {
-            console.log("Connection closed");
-            process.exit();
-        });
-
-        conn.connect();
-    });
-    // #endregion
-
     return router;
 };
 
