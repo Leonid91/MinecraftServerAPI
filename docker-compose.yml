@@ -1,4 +1,11 @@
 version: '3.8'
+
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  
 services:
   web:
     build:
@@ -18,7 +25,55 @@ services:
       EULA: true
       ENABLE_RCON: true
       RCON_PASSWORD: rcon
+      ONLINE_MODE: false
     container_name: mc_serv
+    volumes:
+      - ./world:/data/world
     ports:
       - "25565:25565"
+
+  prom:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus-data:/prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+
+  graf:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SERVER_HTTP_PORT=3100
+    ports:
+      - "3100:3100"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    
+
+  minecraft-exporter:
+    build: https://github.com/Joshi425/minecraft-exporter.git
+    container_name: mc_exporter
+    environment:
+      RCON_HOST: mc_serv
+      RCON_PORT: "25575"
+      RCON_PASSWORD: rcon
+    restart: unless-stopped
+    ports:
+    - 9700:8000
+    volumes:
+    - ./world:/world:ro
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
 
