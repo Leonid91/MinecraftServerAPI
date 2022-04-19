@@ -67,6 +67,18 @@ services:
     volumes:
     - ./world:/world:ro
 
+  other-minecraft-exporter:
+    image: ghcr.io/giuliomat/bdt-project:latest
+    container_name: mc_other_exporter
+    environment:
+      MC_RCON_ADDRESS: mc_serv:25575
+      MC_RCON_PASSWORD: rcon
+    restart: unless-stopped
+    ports:
+    - 9150:9150
+    volumes:
+    - ./world:/minecraft/world:ro
+
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
