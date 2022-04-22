@@ -1,22 +1,21 @@
 # MinecraftServerAPI
 
-To install :
+First, connect to GitHub Container Registry 
 
 ```bash
-npm init
 
-npm install
+docker login docker.pkg.github.com -u <github_login> -p <github_token>
 
-npm i rcon
 ```
 
-To run the server :
+To run the container :
 
 ```bash
-cd back
-
-node app.js
+docker-compose up
 ```
+
+To connect to the Minecraft server, use the port 25575.
+To access to Grafana, use the port 3100.
 
 Routes :
 
