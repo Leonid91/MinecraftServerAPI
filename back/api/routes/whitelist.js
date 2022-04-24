@@ -11,36 +11,34 @@ module.exports = () => {
         tools.sendCommandRcon(command, res)
     });
 
-    // empty whitelist
     router.delete('/', async (req, res) => {
-        const command = "whitelist list"
+        const rcon = tools.getRcon()
+        const getWhitelistCommand = "whitelist list"
 
-        const conn = tools.connectRcon()
+        try {
+            // const response = await rcon.send(getWhitelistCommand).then(res => {
+            //     console.log("Response: " + response)
+            //     console.log("Res: " + res)
+            // })
+            const response = await rcon.send(getWhitelistCommand)
+            console.log("Whitelist before deletion: " + response)
 
-        conn.on('auth', function () {
-            console.log("Authenticated.")
-            console.log("Display of the received command: ", JSON.stringify(command))
-            conn.send(command)
-        }).on('response', function (str) {
-            console.log("Response: " + str)
+            playerList = tools.getWhitelistedPlayers(response, ",") // get all player names into an array
+            console.table(playerList) // debug
 
-            playerList = tools.getArrayFromString(str) // get all player names into an array
-            // console.table(playerList)
+            // on attend toutes les commandes de delete avec Promise.all
+            await Promise.all(playerList.map(async player => {
+                const deleteCommand = "whitelist remove " + player
+                const response = await rcon.send(deleteCommand)
+                console.log("Response Delete: " + response)
+            }));
+            res.sendStatus(200);
 
-            res.cookie("playerList", playerList)
-
-            res.send(str)
-        }).on('error', function (err) {
+        } catch (err) {
             console.log("Error: " + err)
-        }).on('end', function () {
-            console.log("Connection closed.")
-            res.end()
-            process.exit()
-        });
+        }
 
-        conn.connect()
-        console.log(res.cookie)
-    });
+    })
 
     // reload whitelist
     router.post('/', async (req, res) => {
