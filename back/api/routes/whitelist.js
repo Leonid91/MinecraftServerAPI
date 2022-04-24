@@ -11,6 +11,7 @@ module.exports = () => {
         tools.sendCommandRcon(command, res)
     });
 
+    // NOT WORKING
     router.delete('/', async (req, res) => {
         const rcon = tools.getRcon()
         const getWhitelistCommand = "whitelist list"

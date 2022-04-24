@@ -10,14 +10,15 @@ module.exports = () => {
     });
 
     // Give a list of items to a player
-    // TODO
+    // NOT WORKING
     router.post('/player', async (req, res) => {
         const command = ""
         tools.sendCommandRcon(command, res)
     });
 
     // Modify the whole inventory of the player
-    // TODO
+    // NOT WORKING
+    // same problem as with delete whitelist
 
     // Empty an inventory
     router.delete('/player', async (req, res) => {
