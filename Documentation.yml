@@ -197,8 +197,8 @@ paths:
       responses:
         "200":
           description: "Logged in"
-        "400":
-          description: "Error when logging in"
+        "409":
+          description: "Wrong username or password"
           
   /user/register:
     post:
@@ -217,7 +217,7 @@ paths:
       responses:
         "200":
           description: "Registered"
-        "201":
+        "409":
           description: "Username already exists"
         "400":
           description: "Error when logging in"
