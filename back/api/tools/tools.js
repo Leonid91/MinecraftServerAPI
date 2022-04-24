@@ -35,8 +35,19 @@ function getRcon() {
     return rcon
 }
 
-function getArrayFromString(str) {
-    return str.replaceAll(" ", "").substring(str.indexOf(':')+1).split(",")
+function getPlayersFromWhitelistResponse(str, separator) {
+    const trimmedStr = trimGetWhitelistResponse(str)
+    return trimmedStr.split(",")
 }
 
-module.exports = { sendCommandRcon, getRcon, getArrayFromString }
+function trimGetWhitelistResponse() {
+    if (str != "" && str != null && str != " ") {
+        if (str === "There are no whitelisted players") {
+            return ""
+        }
+        strWithoutWhitespaces = str.replaceAll(" ", "")
+        return strWithoutWhitespaces.split(":").pop()
+    }
+}
+
+module.exports = { sendCommandRcon, getRcon, getPlayersFromWhitelistResponse }
