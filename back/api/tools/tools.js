@@ -37,10 +37,10 @@ function getRcon() {
 
 function getPlayersFromWhitelistResponse(str, separator) {
     const trimmedStr = trimGetWhitelistResponse(str)
-    return trimmedStr.split(",")
+    return trimmedStr.split(separator)
 }
 
-function trimGetWhitelistResponse() {
+function trimGetWhitelistResponse(str) {
     if (str != "" && str != null && str != " ") {
         if (str === "There are no whitelisted players") {
             return ""

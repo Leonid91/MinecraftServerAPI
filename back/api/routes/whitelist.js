@@ -15,34 +15,76 @@ module.exports = () => {
         const rcon = tools.getRcon()
         const getWhitelistCommand = "whitelist list"
 
-        rcon.on('auth', async function () {
-            try {
-                // const response = await rcon.send(getWhitelistCommand).then(res => {
-                //     console.log("Response: " + response)
-                //     console.log("Res: " + res)
-                // })
-                const response = rcon.send(getWhitelistCommand)
-                console.table(response)
-                console.log("Whitelist before deletion: " + response)
+        // rcon.on('auth', async function () {
+        //     try {
+        //         // const response = await rcon.send(getWhitelistCommand).then(res => {
+        //         //     console.log("Response: " + response)
+        //         //     console.log("Res: " + res)
+        //         // })
+        //         const response = rcon.send(getWhitelistCommand)
+        //         console.table(response)
+        //         console.log("Whitelist before deletion: " + response)
 
-                playerList = tools.getPlayersFromWhitelistResponse(response, ",") // get all player names into an array
-                console.table(playerList) // debug
+        //         playerList = tools.getPlayersFromWhitelistResponse(response, ",") // get all player names into an array
+        //         console.table(playerList) // debug
 
-                // on attend toutes les commandes de delete avec Promise.all
-                await Promise.all(playerList.map(async player => {
-                    const deleteCommand = "whitelist remove " + player
-                    const response = await rcon.send(deleteCommand)
-                    console.log("Response Delete: " + response)
-                }));
-                res.sendStatus(200);
+        //         // on attend toutes les commandes de delete avec Promise.all
+        //         await Promise.all(playerList.map(async player => {
+        //             const deleteCommand = "whitelist remove " + player
+        //             const response = await rcon.send(deleteCommand)
+        //             console.log("Response Delete: " + response)
+        //         }));
+        //         res.sendStatus(200);
 
-            } catch (err) {
-                console.log("Error: " + err)
-            }
-        })
+        //     } catch (err) {
+        //         console.log("Error: " + err)
+        //     }
+        // })
 
-        rcon.connect()
+        // rcon.on('auth', function () {
+        //     // You must wait until this event is fired before sending any commands,
+        //     // otherwise those commands will fail.
+        //     console.log("Authenticated.")
+        //     console.log("Display of the received command: ", JSON.stringify(getWhitelistCommand))
+        //     rcon.send(getWhitelistCommand)
+        // }).on('response', function (str) {
+        //     playerList = tools.getPlayersFromWhitelistResponse(str, ",") // get all player names into an array
+        //     console.log("Current whitelist: " + str)
+        //     console.table(playerList) // debug
+        //     res.send(str)
 
+        //     playerList.forEach(player => {
+        //         const deleteCommand = "whitelist remove " + player
+
+        //         rcon.on('auth', function () {
+        //             // You must wait until this event is fired before sending any commands,
+        //             // otherwise those commands will fail.
+        //             console.log("Authenticated.")
+        //             console.log("Display of the received command: ", JSON.stringify(deleteCommand))
+        //             rcon.send(deleteCommand)
+        //         }).on('response', function (str) {
+        //             console.log("Response: " + str)
+        //             res.send(str)
+        //         }).on('error', function (err) {
+        //             console.log("Error: " + err)
+        //         }).on('end', function () {
+        //             console.log("Connection closed.")
+        //             res.end()
+        //             process.exit()
+        //         });
+
+        //         rcon.connect()
+        //     });
+
+        // }).on('error', function (err) {
+        //     console.log("Error: " + err)
+        // }).on('end', function () {
+        //     console.log("Connection closed.")
+        //     res.end()
+        //     process.exit()
+        // });
+
+        // rcon.connect()
     })
 
     // reload whitelist
