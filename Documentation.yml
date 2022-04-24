@@ -179,6 +179,48 @@ paths:
           description: "Whitelist disabled"
         "400":
           description: "Error when enabling/disabling the whitelist"
+          
+  /user/login:
+    post:
+      tags:
+      - "user"
+      summary: "Log In"
+      description: ""
+      operationId: "LogIn"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User model"
+        required: true
+        schema:
+          $ref: "#/definitions/UserModel"
+      responses:
+        "200":
+          description: "Logged in"
+        "400":
+          description: "Error when logging in"
+          
+  /user/register:
+    post:
+      tags:
+      - "user"
+      summary: "Register"
+      description: ""
+      operationId: "Register"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User model"
+        required: true
+        schema:
+          $ref: "#/definitions/UserModel"
+      responses:
+        "200":
+          description: "Registered"
+        "201":
+          description: "Username already exists"
+        "400":
+          description: "Error when logging in"
     
   /rcon:
     post:
@@ -384,3 +426,15 @@ definitions:
         type: "string"
       count:
         type: "integer"
+        
+  UserModel:
+    type: "object"
+    required:
+    - "username"
+    - "password"
+
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
