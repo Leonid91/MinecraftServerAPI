@@ -7,17 +7,18 @@ volumes:
     driver: local
   
 services:
-  # web:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: mc_webapi
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - .:/MinecraftServerAPI
-  #   links:
-  #     - mc_serv:mcserv
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mc_webapi
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/MinecraftServerAPI
+    links:
+      - mc_serv:mcserv
 
   mcserv:
     image: itzg/minecraft-server
@@ -31,7 +32,6 @@ services:
       - ./world:/data/world
     ports:
       - "25565:25565"
-      - "25575:25575" # pour rcon
 
   prom:
     image: prom/prometheus
@@ -67,6 +67,20 @@ services:
     - 9700:8000
     volumes:
     - ./world:/world:ro
+
+  other-minecraft-exporter:
+    image: ghcr.io/dirien/minecraft-exporter
+    container_name: mc_other_exporter
+    environment:
+      MC_RCON_ADDRESS: mc_serv:25575
+      MC_RCON_PASSWORD: rcon
+      WEB_DISABLED_EXPORTER_METRICS: true
+      MC_WORLD: /minecraft/world
+    restart: unless-stopped
+    ports:
+    - 9150:9150
+    volumes:
+    - ./world:/minecraft/world:ro
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
