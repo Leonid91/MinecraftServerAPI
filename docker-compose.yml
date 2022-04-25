@@ -7,6 +7,7 @@ volumes:
     driver: local
   
 services:
+
   web:
     build:
       context: .
@@ -68,11 +69,13 @@ services:
     - ./world:/world:ro
 
   other-minecraft-exporter:
-    image: ghcr.io/giuliomat/bdt-project:latest
+    image: ghcr.io/dirien/minecraft-exporter
     container_name: mc_other_exporter
     environment:
       MC_RCON_ADDRESS: mc_serv:25575
       MC_RCON_PASSWORD: rcon
+      WEB_DISABLED_EXPORTER_METRICS: true
+      MC_WORLD: /minecraft/world
     restart: unless-stopped
     ports:
     - 9150:9150
