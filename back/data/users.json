@@ -18,5 +18,9 @@
     {
         "username": "Nono",
         "password": "$2a$10$VDNQ6TEYsaJyjfdctt7rA.VrKmTQ4g/P2ebfBw.s6XLbRl2Y4Z9zm"
+    },
+    {
+        "username": "user",
+        "password": "$2a$10$XOzdXelVTRBWRzgbCRyRaeEkYu65qkYsuF6vDN8EW2krUXFE/DLcK"
     }
 ]
